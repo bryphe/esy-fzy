@@ -3,3 +3,7 @@ fzytest
 *.o
 config.h
 test/acceptance/vendor/bundle
+
+# Esy Bits
+node_modules/*
+_esy/*

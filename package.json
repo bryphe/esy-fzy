@@ -1,0 +1,14 @@
+{
+  "name": "esy-fzy",
+  "version": "5.9.1000",
+  "description": "esy-enabled build for fzy",
+  "license": "MIT",
+  "esy": {
+    "build": [
+        ["make"],
+        ["ar", "rcs", "libfzy.a", "src/match.o", "src/choices.o", "src/options.o"]
+    ],
+    "buildsInSource": true
+  },
+  "dependencies": { }
+}
