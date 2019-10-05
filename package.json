@@ -10,5 +10,19 @@
     ],
     "buildsInSource": true
   },
+  "exportedEnv": {
+        "FZY_INCLUDE_PATH": {
+            "val": "#{self.install / 'src'}",
+            "scope": "global"
+        },
+        "FZY_LIB_PATH": {
+            "val": "#{self.lib}",
+            "scope": "global"
+        },
+        "LD_LIBRARY_PATH": {
+            "val": "#{self.lib : $LD_LIBRARY_PATH}",
+            "scope": "global"
+        }
+    },
   "dependencies": { }
 }
