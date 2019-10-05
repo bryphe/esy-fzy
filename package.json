@@ -11,11 +11,11 @@
     "buildsInSource": true,
     "exportedEnv": {
         "FZY_INCLUDE_PATH": {
-            "val": "#{self.install / 'src'}",
+            "val": "#{self.target_dir / 'src'}",
             "scope": "global"
         },
         "FZY_LIB_PATH": {
-            "val": "#{self.install}",
+            "val": "#{self.target_dir}",
             "scope": "global"
         }
     }
