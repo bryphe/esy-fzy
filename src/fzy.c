@@ -6,10 +6,8 @@
 #include <unistd.h>
 
 #include "match.h"
-#include "tty.h"
 #include "choices.h"
 #include "options.h"
-#include "tty_interface.h"
 
 #include "../config.h"
 
@@ -38,27 +36,6 @@ int main(int argc, char *argv[]) {
 				printf("%f\t", choices_getscore(&choices, i));
 			printf("%s\n", choices_get(&choices, i));
 		}
-	} else {
-		/* interactive */
-
-		if (isatty(STDIN_FILENO))
-			choices_fread(&choices, stdin, options.input_delimiter);
-
-		tty_t tty;
-		tty_init(&tty, options.tty_filename);
-
-		if (!isatty(STDIN_FILENO))
-			choices_fread(&choices, stdin, options.input_delimiter);
-
-		if (options.num_lines > choices.size)
-			options.num_lines = choices.size;
-
-		if (options.num_lines + 1 > tty_getheight(&tty))
-			options.num_lines = tty_getheight(&tty) - 1;
-
-		tty_interface_t tty_interface;
-		tty_interface_init(&tty_interface, &tty, &choices, &options);
-		ret = tty_interface_run(&tty_interface);
 	}
 
 	choices_destroy(&choices);

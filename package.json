@@ -5,7 +5,7 @@
   "license": "MIT",
   "esy": {
     "build": [
-        ["make"],
+        ["bash", "-c", "#{os == 'windows' ? 'CC=x86_64-w64-mingw32-gcc make' : 'make'}"],
         ["ar", "rcs", "libfzy.a", "src/match.o", "src/choices.o", "src/options.o"]
     ],
     "buildsInSource": true,

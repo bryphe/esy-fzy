@@ -9,6 +9,10 @@
 #include "choices.h"
 #include "match.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 /* Initial size of buffer for storing input in memory */
 #define INITIAL_BUFFER_CAPACITY 4096
 
@@ -111,7 +115,14 @@ void choices_init(choices_t *c, options_t *options) {
 	if (options->workers) {
 		c->worker_count = options->workers;
 	} else {
+#ifdef _WIN32
+		SYSTEM_INFO siSysInfo;
+		GetSystemInfo(&siSysInfo);
+		c->worker_count = (int)siSysInfo.dwNumberOfProcessors;
+#endif
+#ifdef __unix__
 		c->worker_count = (int)sysconf(_SC_NPROCESSORS_ONLN);
+#endif
 	}
 
 	choices_reset_search(c);
