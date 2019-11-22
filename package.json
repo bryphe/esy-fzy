@@ -5,7 +5,10 @@
   "license": "MIT",
   "esy": {
     "build": [
-        ["bash", "-c", "#{os == 'windows' ? 'CC=x86_64-w64-mingw32-gcc make' : 'make'}"],
+        ["bash", "-c", "#{os == 'windows' ? 'CC=x86_64-w64-mingw32-gcc make' : 'echo'}"],
+        ["bash", "-c", "#{os == 'darwin' ? 'make' : 'echo'}"],
+        ["bash", "-c", "#{os == 'macOS' ? 'make' : 'echo'}"],
+        ["bash", "-c", "#{os == 'linux' ? 'CFLAGS=-fPIC make' : 'echo'}"],
         ["ar", "rcs", "libfzy.a", "src/match.o", "src/choices.o", "src/options.o"]
     ],
     "buildsInSource": true,
