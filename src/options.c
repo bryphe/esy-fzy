@@ -51,6 +51,7 @@ void options_init(options_t *options) {
 	options->prompt          = DEFAULT_PROMPT;
 	options->workers         = DEFAULT_WORKERS;
 	options->input_delimiter = '\n';
+	options->sort_choices    = 1;
 }
 
 void options_parse(options_t *options, int argc, char *argv[]) {
