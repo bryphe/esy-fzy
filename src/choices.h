@@ -9,6 +9,7 @@
 struct scored_result {
 	score_t score;
 	const char *str;
+	size_t index;
 };
 
 typedef struct {
@@ -25,6 +26,8 @@ typedef struct {
 	size_t selection;
 
 	unsigned int worker_count;
+
+	int (*compare_func)(const void *, const void *);
 } choices_t;
 
 void choices_init(choices_t *c, options_t *options);

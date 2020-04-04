@@ -12,6 +12,7 @@ typedef struct {
 	const char *prompt;
 	unsigned int workers;
 	char input_delimiter;
+	int sort_choices;
 } options_t;
 
 void options_init(options_t *options);

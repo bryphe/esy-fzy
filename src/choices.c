@@ -15,7 +15,7 @@
 /* Initial size of choices array */
 #define INITIAL_CHOICE_CAPACITY 128
 
-static int cmpchoice(const void *_idx1, const void *_idx2) {
+static int cmpchoice_score(const void *_idx1, const void *_idx2) {
 	const struct scored_result *a = _idx1;
 	const struct scored_result *b = _idx2;
 
@@ -30,6 +30,19 @@ static int cmpchoice(const void *_idx1, const void *_idx2) {
 			return 1;
 		}
 	} else if (a->score < b->score) {
+		return 1;
+	} else {
+		return -1;
+	}
+}
+
+static int cmpchoice_index(const void *_idx1, const void *_idx2) {
+	const struct scored_result *a = _idx1;
+	const struct scored_result *b = _idx2;
+
+	if (a->index == b->index) {
+		return 0;
+	} else if (a->index < b->index) {
 		return 1;
 	} else {
 		return -1;
@@ -114,6 +127,12 @@ void choices_init(choices_t *c, options_t *options) {
 		c->worker_count = 1;
 	}
 
+	if (options->sort_choices) {
+		c->compare_func = cmpchoice_score;
+	} else {
+		c->compare_func = cmpchoice_index;
+	}
+
 	choices_reset_search(c);
 }
 
@@ -182,7 +201,7 @@ static void worker_get_next_batch(struct search_job *job, size_t *start, size_t 
 	pthread_mutex_unlock(&job->lock);
 }
 
-static struct result_list merge2(struct result_list list1, struct result_list list2) {
+static struct result_list merge2(struct result_list list1, struct result_list list2, const choices_t *c) {
 	size_t result_index = 0, index1 = 0, index2 = 0;
 
 	struct result_list result;
@@ -194,7 +213,7 @@ static struct result_list merge2(struct result_list list1, struct result_list li
 	}
 
 	while(index1 < list1.size && index2 < list2.size) {
-		if (cmpchoice(&list1.list[index1], &list2.list[index2]) < 0) {
+		if (c->compare_func(&list1.list[index1], &list2.list[index2]) < 0) {
 			result.list[result_index++] = list1.list[index1++];
 		} else {
 			result.list[result_index++] = list2.list[index2++];
@@ -233,13 +252,14 @@ static void *choices_search_worker(void *data) {
 			if (has_match(job->search, c->strings[i])) {
 				result->list[result->size].str = c->strings[i];
 				result->list[result->size].score = match(job->search, c->strings[i]);
+				result->list[result->size].index = i;
 				result->size++;
 			}
 		}
 	}
 
 	/* Sort the partial result */
-	qsort(result->list, result->size, sizeof(struct scored_result), cmpchoice);
+	qsort(result->list, result->size, sizeof(struct scored_result), cmpchoice_index);
 
 	/* Fan-in, merging results */
 	for(unsigned int step = 0;; step++) {
@@ -255,7 +275,7 @@ static void *choices_search_worker(void *data) {
 			exit(EXIT_FAILURE);
 		}
 
-		w->result = merge2(w->result, job->workers[next_worker].result);
+		w->result = merge2(w->result, job->workers[next_worker].result, c);
 	}
 
 	return NULL;
