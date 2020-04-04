@@ -5,28 +5,28 @@ jobs:
 - job: Ubuntu1604
   displayName: "Linux - Ubuntu 16.04"
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: 'ubuntu-16.04'
   steps:
   - template: .ci/esy-build-steps.yml
 
 - job: Ubuntu1804
   displayName: "Linux - Ubuntu 18.04"
   pool:
-    vmImage: 'Ubuntu 18.04'
-  steps:
-  - template: .ci/esy-build-steps.yml
-
-- job: MacOS13
-  displayName: "MacOS Mojave"
-  pool:
-    vmImage: 'macOS 10.13'
+    vmImage: 'ubuntu-18.04'
   steps:
   - template: .ci/esy-build-steps.yml
 
 - job: MacOS14
-  displayName: "MacOS High Sierra"
+  displayName: "MacOS Mojave"
   pool:
     vmImage: 'macOS 10.14'
+  steps:
+  - template: .ci/esy-build-steps.yml
+
+- job: MacOS15
+  displayName: "MacOS Catalina"
+  pool:
+    vmImage: 'macOS-10.15'
   steps:
   - template: .ci/esy-build-steps.yml
 
