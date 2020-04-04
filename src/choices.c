@@ -259,7 +259,7 @@ static void *choices_search_worker(void *data) {
 	}
 
 	/* Sort the partial result */
-	qsort(result->list, result->size, sizeof(struct scored_result), cmpchoice_index);
+	qsort(result->list, result->size, sizeof(struct scored_result), c->compare_func);
 
 	/* Fan-in, merging results */
 	for(unsigned int step = 0;; step++) {
