@@ -43,9 +43,9 @@ static int cmpchoice_index(const void *_idx1, const void *_idx2) {
 	if (a->index == b->index) {
 		return 0;
 	} else if (a->index < b->index) {
-		return 1;
-	} else {
 		return -1;
+	} else {
+		return 1;
 	}
 }
 
@@ -127,7 +127,7 @@ void choices_init(choices_t *c, options_t *options) {
 		c->worker_count = 1;
 	}
 
-	if (options->sort_choices) {
+	if (options->sort_choices == 1) {
 		c->compare_func = cmpchoice_score;
 	} else {
 		c->compare_func = cmpchoice_index;
