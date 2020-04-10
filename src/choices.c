@@ -332,6 +332,10 @@ score_t choices_getscore(choices_t *c, size_t n) {
 	return c->results[n].score;
 }
 
+size_t choices_getindex(choices_t *c, size_t n) {
+	return c->results[n].index;
+}
+
 void choices_prev(choices_t *c) {
 	if (c->available)
 		c->selection = (c->selection + c->available - 1) % c->available;
