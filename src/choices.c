@@ -344,8 +344,9 @@ size_t choices_getindex(choices_t *c, size_t n) {
 	return c->results[n].index;
 }
 
-size_t* choices_getpositions(choices_t *c, size_t n) {
-	return c->results[n].positions;
+void choices_getpositions(choices_t *c, size_t n, size_t *positions, int pos_len) {
+	for(int i = 0; i < pos_len; ++i)
+		positions[i] = c->results[n].positions[i];
 }
 
 void choices_prev(choices_t *c) {
