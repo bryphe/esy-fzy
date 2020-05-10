@@ -252,7 +252,7 @@ static void *choices_search_worker(void *data) {
 			if (has_match(job->search, c->strings[i])) {
 				result->list[result->size].str = c->strings[i];
 
-				size_t search_len = strlen(job->search);
+				int search_len = strlen(job->search);
 				size_t positions[search_len];
 				for (int i = 0; i < search_len; i++)
 					positions[i] = -1;
