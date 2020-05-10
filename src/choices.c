@@ -251,15 +251,7 @@ static void *choices_search_worker(void *data) {
 		for(size_t i = start; i < end; i++) {
 			if (has_match(job->search, c->strings[i])) {
 				result->list[result->size].str = c->strings[i];
-
-				int search_len = strlen(job->search);
-				size_t positions[search_len];
-				for (int i = 0; i < search_len; i++)
-					positions[i] = -1;
-
-				result->list[result->size].score = match_positions(job->search, c->strings[i], positions);
-				result->list[result->size].positions = positions;
-
+				result->list[result->size].score = match(job->search, c->strings[i]);
 				result->list[result->size].index = i;
 				result->size++;
 			}
@@ -342,11 +334,6 @@ score_t choices_getscore(choices_t *c, size_t n) {
 
 size_t choices_getindex(choices_t *c, size_t n) {
 	return c->results[n].index;
-}
-
-void choices_getpositions(choices_t *c, size_t n, size_t *positions, int pos_len) {
-	for(int i = 0; i < pos_len; ++i)
-		positions[i] = c->results[n].positions[i];
 }
 
 void choices_prev(choices_t *c) {
