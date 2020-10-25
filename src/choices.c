@@ -24,7 +24,11 @@ static int cmpchoice_score(const void *_idx1, const void *_idx2) {
 		 * pointers. We can do this since we know all the strings are
 		 * from a contiguous memory segment (buffer in choices_t).
 		 */
-		if (a->str < b->str) {
+		int index_diff = strcmp(a->str, b->str);
+
+		if (index_diff != 0) {
+			return index_diff;
+		} else if (a->str < b->str) {
 			return -1;
 		} else {
 			return 1;
@@ -40,9 +44,7 @@ static int cmpchoice_index(const void *_idx1, const void *_idx2) {
 	const struct scored_result *a = _idx1;
 	const struct scored_result *b = _idx2;
 
-	if (a->index == b->index) {
-		return 0;
-	} else if (a->index < b->index) {
+	if (a->index < b->index) {
 		return -1;
 	} else {
 		return 1;
