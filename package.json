@@ -9,16 +9,21 @@
         ["bash", "-c", "#{os == 'darwin' ? 'make' : 'echo'}"],
         ["bash", "-c", "#{os == 'macOS' ? 'make' : 'echo'}"],
         ["bash", "-c", "#{os == 'linux' ? 'CFLAGS=-fPIC make' : 'echo'}"],
-        ["ar", "rcs", "libfzy.a", "src/match.o", "src/choices.o", "src/options.o"]
+        ["mkdir", "#{self.install / 'include'}"],
+        ["cp", "src/options.h", "#{self.install / 'include'}"],
+        ["cp", "src/match.h", "#{self.install / 'include'}"],
+        ["cp", "src/choices.h", "#{self.install / 'include'}"],
+        ["ar", "rcs", "libfzy.a", "src/match.o", "src/choices.o", "src/options.o"],
+        ["cp", "libfzy.a", "#{self.lib}"]
     ],
     "buildsInSource": true,
     "exportedEnv": {
         "FZY_INCLUDE_PATH": {
-            "val": "#{self.target_dir / 'src'}",
+            "val": "#{self.install / 'include'}",
             "scope": "global"
         },
         "FZY_LIB_PATH": {
-            "val": "#{self.target_dir}",
+            "val": "#{self.lib}",
             "scope": "global"
         }
     }
